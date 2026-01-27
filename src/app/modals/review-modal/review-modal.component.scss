@@ -1,0 +1,112 @@
+.order-info {
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+    color: #333;
+
+    .date {
+        font-weight: 400;
+        font-size: 14px;
+        color: #666;
+    }
+}
+
+.product-item {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+
+    .product-header {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px dashed #e0e0e0;
+
+        img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            h3 {
+                margin: 0 0 4px 0;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0;
+                font-size: 14px;
+                color: #666;
+            }
+        }
+    }
+
+    .rating-section {
+        text-align: center;
+
+        p {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+
+            ion-icon {
+                font-size: 32px;
+                color: #ddd;
+                cursor: pointer;
+                transition: transform 0.2s;
+
+                &.active {
+                    color: #ffc107;
+                }
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .comment-input {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            --background: #f9f9f9;
+        }
+
+        .submit-btn {
+            --border-radius: 12px;
+            margin: 0;
+        }
+    }
+
+    .submitted-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 20px 0;
+
+        ion-icon {
+            font-size: 48px;
+        }
+
+        p {
+            margin: 0;
+            font-weight: 600;
+            color: var(--ion-color-success);
+        }
+    }
+}

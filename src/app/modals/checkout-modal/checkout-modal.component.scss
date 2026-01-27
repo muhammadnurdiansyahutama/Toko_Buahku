@@ -1,0 +1,484 @@
+.checkout-content {
+    --background: #f5f7fa;
+}
+
+// Progress Steps - Match app theme (purple gradient)
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::after {
+        content: '';
+        width: 40px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    &:last-child::after {
+        display: none;
+    }
+
+    &.active .step-number {
+        background: white;
+        color: #667eea;
+        font-weight: 700;
+    }
+
+    &.active::after {
+        background: white;
+    }
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+// Step Content
+.step-content {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+
+    .icon-large {
+        font-size: 64px;
+        color: #667eea;
+        display: block;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    h2 {
+        text-align: center;
+        margin: 0 0 8px;
+        font-size: 24px;
+        font-weight: 700;
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin: 0 0 24px;
+        font-size: 14px;
+    }
+}
+
+// User Info Card
+.user-info-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    ion-icon {
+        font-size: 24px;
+        color: #667eea;
+        margin-top: 4px;
+    }
+
+    div {
+        flex: 1;
+    }
+
+    label {
+        display: block;
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 4px;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+}
+
+// Form Groups
+.form-group {
+    margin-bottom: 24px;
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+    }
+
+    small {
+        display: block;
+        margin-top: 6px;
+        color: #999;
+        font-size: 12px;
+    }
+}
+
+.shipping-textarea {
+    --background: white;
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+
+    &:focus {
+        border-color: #667eea;
+    }
+}
+
+// Payment Methods
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-method {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 2px solid #e8e8e8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    &.selected {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.05);
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+    }
+
+    .method-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        ion-icon {
+            font-size: 28px;
+            color: white;
+        }
+    }
+
+    .method-info {
+        flex: 1;
+
+        h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+        }
+    }
+
+    .method-radio ion-radio {
+        --color-checked: #667eea;
+    }
+}
+
+// Confirmation Section
+.confirmation-section {
+    h3 {
+        font-size: 16px;
+        margin: 0 0 12px;
+        font-weight: 700;
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+    }
+}
+
+.order-items {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    img {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .item-details {
+        flex: 1;
+
+        .item-name {
+            margin: 0 0 4px;
+            font-weight: 700;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .item-qty {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+        }
+    }
+
+    .item-total {
+        margin: 0;
+        font-weight: 700;
+        color: #667eea;
+        font-size: 15px;
+    }
+}
+
+.order-summary {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        font-size: 14px;
+
+        &.total {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 16px;
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #333;
+
+            span:last-child {
+                color: #667eea;
+            }
+        }
+
+        .discount {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .free {
+            color: #84fab0;
+            font-weight: 700;
+            font-size: 13px;
+        }
+    }
+}
+
+.delivery-info,
+.payment-info {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    h3 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    p {
+        margin: 6px 0;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .notes {
+        font-style: italic;
+        color: #999;
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+}
+
+// Success Screen
+.success-content {
+    text-align: center;
+    padding: 40px 24px !important;
+
+    .success-animation {
+        margin: 20px 0 32px;
+
+        ion-icon {
+            font-size: 100px;
+            animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+    }
+
+    h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .order-number-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 28px 24px;
+        margin: 32px 0;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+
+        p {
+            margin: 0 0 8px;
+            opacity: 0.95;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            font-family: 'Poppins', sans-serif;
+        }
+    }
+
+    .success-message {
+        color: #666;
+        line-height: 1.8;
+        font-size: 15px;
+
+        strong {
+            color: #667eea;
+        }
+    }
+}
+
+@keyframes successPop {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.15) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+// Footer Buttons
+.footer-buttons {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+
+    ion-button {
+        flex: 1;
+        --border-radius: 12px;
+        font-weight: 700;
+        text-transform: none;
+        font-size: 15px;
+        height: 48px;
+        font-family: 'Poppins', sans-serif;
+
+        &[fill="outline"] {
+            --border-color: #667eea;
+            --color: #667eea;
+        }
+
+        &:not([fill="outline"]) {
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+    }
+}
+
+// Footer for success step
+ion-footer {
+    ion-button {
+        --border-radius: 12px;
+        --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        font-weight: 700;
+        text-transform: none;
+        font-size: 16px;
+        height: 52px;
+        margin: 12px;
+        font-family: 'Poppins', sans-serif;
+    }
+}

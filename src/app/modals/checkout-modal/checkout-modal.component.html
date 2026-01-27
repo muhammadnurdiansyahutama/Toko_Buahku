@@ -1,0 +1,202 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ getStepTitle() }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()" *ngIf="currentStep !== 5">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+    <!-- Progress Steps -->
+    <div class="progress-steps" *ngIf="currentStep <= 4">
+        <div class="step" *ngFor="let step of [1,2,3,4]" [class.active]="currentStep >= step">
+            <div class="step-number">{{ step }}</div>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content class="checkout-content">
+
+    <!-- Step 1: User Info (Read-Only) -->
+    <div class="step-content" *ngIf="currentStep === 1">
+        <div class="user-info-card">
+            <ion-icon name="person-circle-outline" class="icon-large"></ion-icon>
+            <h2>Informasi Pembeli</h2>
+            <p class="subtitle">Data berikut akan digunakan untuk pengiriman</p>
+
+            <div class="info-item">
+                <ion-icon name="person-outline"></ion-icon>
+                <div>
+                    <label>Nama Lengkap</label>
+                    <p>{{ userName }}</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <ion-icon name="call-outline"></ion-icon>
+                <div>
+                    <label>Nomor Telepon</label>
+                    <p>{{ userPhone }}</p>
+                </div>
+            </div>
+
+            <div class="info-item" *ngIf="userEmail">
+                <ion-icon name="mail-outline"></ion-icon>
+                <div>
+                    <label>Email</label>
+                    <p>{{ userEmail }}</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <ion-icon name="location-outline"></ion-icon>
+                <div>
+                    <label>Alamat Terdaftar</label>
+                    <p>{{ userAddress }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Shipping Address -->
+    <div class="step-content" *ngIf="currentStep === 2">
+        <ion-icon name="location-outline" class="icon-large"></ion-icon>
+        <h2>Alamat Pengiriman</h2>
+        <p class="subtitle">Masukkan alamat lengkap untuk pengiriman</p>
+
+        <div class="form-group">
+            <label>Alamat Lengkap *</label>
+            <ion-textarea [(ngModel)]="shippingAddress"
+                placeholder="Jl. Contoh No. 123, RT/RW, Kelurahan, Kecamatan, Kota, Provinsi" rows="4"
+                class="shipping-textarea"></ion-textarea>
+            <small>Minimal 10 karakter</small>
+        </div>
+
+        <div class="form-group">
+            <label>Catatan (Opsional)</label>
+            <ion-textarea [(ngModel)]="notes" placeholder="Contoh: Depan rumah ada pohon mangga" rows="3"
+                class="shipping-textarea"></ion-textarea>
+        </div>
+    </div>
+
+    <!-- Step 3: Payment Method -->
+    <div class="step-content" *ngIf="currentStep === 3">
+        <ion-icon name="card-outline" class="icon-large"></ion-icon>
+        <h2>Metode Pembayaran</h2>
+        <p class="subtitle">Pilih metode pembayaran yang diinginkan</p>
+
+        <div class="payment-methods">
+            <div class="payment-method" *ngFor="let method of paymentMethods"
+                [class.selected]="paymentMethod === method.value" (click)="paymentMethod = method.value">
+                <div class="method-icon">
+                    <ion-icon [name]="method.icon"></ion-icon>
+                </div>
+                <div class="method-info">
+                    <h3>{{ method.label }}</h3>
+                    <p>{{ method.description }}</p>
+                </div>
+                <div class="method-radio">
+                    <ion-radio [value]="method.value"></ion-radio>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div class="step-content" *ngIf="currentStep === 4">
+        <ion-icon name="checkmark-circle-outline" class="icon-large"></ion-icon>
+        <h2>Konfirmasi Pesanan</h2>
+        <p class="subtitle">Pastikan semua informasi sudah benar</p>
+
+        <div class="confirmation-section">
+            <h3>Ringkasan Pesanan</h3>
+            <div class="order-items">
+                <div class="order-item" *ngFor="let item of cartItems">
+                    <img [src]="item.image" [alt]="item.name">
+                    <div class="item-details">
+                        <p class="item-name">{{ item.name }}</p>
+                        <p class="item-qty">{{ item.quantity }}x Rp {{ item.price | number:'1.0-0' }}</p>
+                    </div>
+                    <p class="item-total">Rp {{ item.subtotal | number:'1.0-0' }}</p>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>Rp {{ subtotal | number:'1.0-0' }}</span>
+                </div>
+                <div class="summary-row" *ngIf="voucher">
+                    <span>Diskon ({{ voucher.code }})</span>
+                    <span class="discount">-Rp {{ voucher.discount | number:'1.0-0' }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Ongkir</span>
+                    <span *ngIf="shippingCost === 0" class="free">GRATIS</span>
+                    <span *ngIf="shippingCost > 0">Rp {{ shippingCost | number:'1.0-0' }}</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>Rp {{ total | number:'1.0-0' }}</span>
+                </div>
+            </div>
+
+            <div class="delivery-info">
+                <h3>Informasi Pengiriman</h3>
+                <p><strong>{{ userName }}</strong> - {{ userPhone }}</p>
+                <p>{{ shippingAddress }}</p>
+                <p *ngIf="notes" class="notes">Catatan: {{ notes }}</p>
+            </div>
+
+            <div class="payment-info">
+                <h3>Metode Pembayaran</h3>
+                <p>{{ getPaymentMethodLabel() }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 5: Success -->
+    <div class="step-content success-content" *ngIf="currentStep === 5">
+        <div class="success-animation">
+            <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        </div>
+        <h2>Pembayaran Sukses!</h2>
+        <p class="subtitle">Pesanan Anda telah berhasil dibuat</p>
+
+        <div class="order-number-card">
+            <p>Nomor Pesanan</p>
+            <h3>{{ orderNumber }}</h3>
+        </div>
+
+        <p class="success-message">
+            Pesanan Anda sedang diproses dan akan segera dikirim.
+            Cek status pesanan di tab <strong>Pesanan</strong>.
+        </p>
+    </div>
+
+</ion-content>
+
+<ion-footer *ngIf="currentStep <= 4">
+    <ion-toolbar>
+        <div class="footer-buttons">
+            <ion-button expand="block" fill="outline" (click)="previousStep()" *ngIf="currentStep > 1">
+                Kembali
+            </ion-button>
+            <ion-button expand="block" (click)="nextStep()" [disabled]="isProcessing">
+                <ion-spinner name="crescent" *ngIf="isProcessing"></ion-spinner>
+                <span *ngIf="!isProcessing">
+                    {{ currentStep === 4 ? 'Lanjutkan' : 'Selanjutnya' }}
+                </span>
+            </ion-button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
+
+<ion-footer *ngIf="currentStep === 5">
+    <ion-toolbar>
+        <ion-button expand="block" (click)="dismiss(true)">
+            Lihat Pesanan
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

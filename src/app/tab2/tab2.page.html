@@ -1,0 +1,148 @@
+<ion-header [translucent]="true" class="catalog-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-title class="header-title">
+      <div class="logo-section">
+        <ion-icon name="apps-outline" class="logo-icon"></ion-icon>
+        <span>Katalog Buah</span>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="cart-button" (click)="goToCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <ion-badge *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="catalog-content">
+
+  <!-- Search & Filter Bar -->
+  <div class="search-filter-section">
+    <div class="search-wrapper">
+      <div class="search-bar">
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+        <input type="text" placeholder="Cari buah..." [(ngModel)]="searchQuery" (input)="onSearch()">
+      </div>
+      <button class="filter-btn" (click)="toggleFilter()">
+        <ion-icon name="options-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Category Chips -->
+    <div class="category-chips">
+      <div class="chip" [class.active]="selectedCategory === ''" (click)="selectCategory('')">
+        Semua
+      </div>
+      <div class="chip" *ngFor="let category of categories" [class.active]="selectedCategory === category"
+        (click)="selectCategory(category)">
+        {{ category }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Info & Sort -->
+  <div class="results-header">
+    <p class="results-count">{{ filteredProducts.length }} produk ditemukan</p>
+    <div class="sort-dropdown">
+      <select [(ngModel)]="sortBy" (change)="onSort()">
+        <option value="default">Urutkan</option>
+        <option value="name-asc">Nama (A-Z)</option>
+        <option value="name-desc">Nama (Z-A)</option>
+        <option value="price-asc">Harga Terendah</option>
+        <option value="price-desc">Harga Tertinggi</option>
+        <option value="rating">Rating Tertinggi</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="products-section">
+    <div class="products-grid" *ngIf="filteredProducts.length > 0">
+      <div class="product-card" *ngFor="let product of filteredProducts" (click)="viewProductDetail(product)">
+        <div class="product-image">
+          <img [src]="product.image" [alt]="product.name">
+          <div class="discount-badge" *ngIf="product.discount">
+            -{{ product.discount }}%
+          </div>
+          <div class="stock-badge" [class.low]="product.stock < 10">
+            Stok: {{ product.stock }}
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="category-tag">{{ product.category }}</div>
+          <h4>{{ product.name }}</h4>
+          <p class="product-desc">{{ product.description }}</p>
+          <div class="product-price">
+            <span class="current-price">Rp {{ product.price | number:'1.0-0' }}</span>
+            <span class="original-price" *ngIf="product.originalPrice">Rp {{ product.originalPrice | number:'1.0-0'
+              }}</span>
+          </div>
+          <div class="product-footer">
+            <div class="rating">
+              <ion-icon name="star" class="star-icon"></ion-icon>
+              <span>{{ product.rating }}</span>
+              <span class="review-count">({{ product.reviews }})</span>
+            </div>
+            <button class="add-cart-btn" (click)="addToCart(product, $event)">
+              <ion-icon name="add-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredProducts.length === 0">
+      <ion-icon name="search-outline" class="empty-icon"></ion-icon>
+      <h3>Produk tidak ditemukan</h3>
+      <p>Coba kata kunci atau filter lain</p>
+      <button class="reset-btn" (click)="resetFilters()">Reset Filter</button>
+    </div>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="filter-modal" [class.show]="showFilter">
+    <div class="filter-content">
+      <div class="filter-header">
+        <h3>Filter Produk</h3>
+        <ion-icon name="close" (click)="toggleFilter()"></ion-icon>
+      </div>
+
+      <div class="filter-section">
+        <h4>Rentang Harga</h4>
+        <div class="price-range">
+          <input type="number" placeholder="Min" [(ngModel)]="priceMin">
+          <span>-</span>
+          <input type="number" placeholder="Max" [(ngModel)]="priceMax">
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Rating Minimum</h4>
+        <div class="rating-filter">
+          <div class="rating-option" *ngFor="let rating of [5, 4.5, 4, 3.5]" [class.active]="minRating === rating"
+            (click)="minRating = rating">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ rating }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Ketersediaan Stok</h4>
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="inStockOnly">
+          <span>Hanya yang tersedia</span>
+        </label>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-secondary" (click)="resetFilters()">Reset</button>
+        <button class="btn-primary" (click)="applyFilters()">Terapkan</button>
+      </div>
+    </div>
+    <div class="filter-backdrop" (click)="toggleFilter()"></div>
+  </div>
+
+</ion-content>

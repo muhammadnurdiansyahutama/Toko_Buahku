@@ -1,0 +1,113 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>Detail Pesanan</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-bottom">
+    <div class="loading-container" *ngIf="isLoading">
+        <ion-spinner></ion-spinner>
+        <p>Memuat detail...</p>
+    </div>
+
+    <div class="content-wrapper" *ngIf="!isLoading && order">
+
+        <!-- Status Banner -->
+        <div class="status-banner" [class]="order.status">
+            <ion-icon [name]="order.status === 'delivered' ? 'checkmark-circle' : 'time'"></ion-icon>
+            <div class="status-text">
+                <h4>{{ getStatusLabel(order.status) }}</h4>
+                <p>Order ID: #{{ order.order_number }}</p>
+            </div>
+        </div>
+
+        <!-- Shipping Info -->
+        <div class="section">
+            <h3>Informasi Pengiriman</h3>
+            <div class="info-card">
+                <div class="info-row">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <div>
+                        <span class="label">Penerima</span>
+                        <p>{{ order.customer_name }}</p>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <ion-icon name="call-outline"></ion-icon>
+                    <div>
+                        <span class="label">No. Telepon</span>
+                        <p>{{ order.customer_phone }}</p>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <ion-icon name="location-outline"></ion-icon>
+                    <div>
+                        <span class="label">Alamat Pengiriman</span>
+                        <p>{{ order.shipping_address }}</p>
+                    </div>
+                </div>
+                <div class="info-row" *ngIf="order.notes">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <div>
+                        <span class="label">Catatan</span>
+                        <p>{{ order.notes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="section">
+            <h3>Rincian Barang</h3>
+            <div class="items-list">
+                <div class="item-card" *ngFor="let item of order.items">
+                    <img [src]="item.image || 'assets/fruits/default.jpg'" alt="Product Image">
+                    <div class="item-details">
+                        <h4>{{ item.product_name || item.name }}</h4> <!-- API might return product_name or name -->
+                        <div class="price-calc">
+                            {{ item.quantity }} x Rp {{ item.price | number:'1.0-0' }}
+                        </div>
+                    </div>
+                    <div class="item-total">
+                        Rp {{ item.subtotal | number:'1.0-0' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="section">
+            <h3>Rincian Pembayaran</h3>
+            <div class="payment-card">
+                <div class="summary-row">
+                    <span>Metode Pembayaran</span>
+                    <span>Tunai (COD)</span>
+                </div>
+                <div class="divider"></div>
+                <div class="summary-row">
+                    <span>Total Harga ({{ order.items?.length }} barang)</span>
+                    <span>Rp {{ order.total | number:'1.0-0' }}</span>
+                </div>
+                <div class="summary-row" *ngIf="order.discount_amount > 0">
+                    <span>Diskon Voucher</span>
+                    <span class="discount">-Rp {{ order.discount_amount | number:'1.0-0' }}</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>Total Belanja</span>
+                    <span>Rp {{ order.final_total | number:'1.0-0' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Date -->
+        <div class="order-meta">
+            <p>Dipesan pada: {{ order.created_at | date:'dd MMM yyyy, HH:mm' }}</p>
+        </div>
+
+    </div>
+</ion-content>

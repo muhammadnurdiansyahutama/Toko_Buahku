@@ -1,0 +1,888 @@
+.products-content {
+    --background: #f5f7fa;
+}
+
+// Custom Toolbar
+.custom-toolbar {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --color: white;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+
+    .header-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    ion-buttons {
+        ion-button {
+            --color: white;
+
+            ion-icon {
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+// Segment Toolbar
+.segment-toolbar {
+    --background: white;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    padding: 0 16px 12px; // Added padding container
+    border-bottom: 1px solid #f0f0f0;
+
+    ion-segment {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 4px;
+        height: unknown; // Let it auto-size
+
+        ion-segment-button {
+            --color: #666;
+            --color-checked: white;
+            --indicator-color: transparent; // Hide default line
+            --indicator-box-shadow: none;
+            min-height: 44px;
+            text-transform: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin: 0;
+            --padding-start: 0;
+            --padding-end: 0; // Reset padding
+
+            // Target the indicator background for the pill effect
+            &::part(indicator-background) {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            }
+
+            // Fix for white text invisibility issue (when check but indicator not fully rendered or similar)
+            // But main fix is ensuring color is distinct
+
+            &.segment-button-checked {
+                font-weight: 700;
+                // Force color if needed, but --color-checked should work
+            }
+
+            ion-icon {
+                font-size: 20px;
+                margin-right: 8px;
+            }
+
+            ion-label {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+// ============= PRODUCTS VIEW =============
+
+.products-view {
+    padding-bottom: 80px;
+}
+
+// Search Section
+.search-section {
+    padding: 16px;
+    background: white;
+    margin-bottom: 12px;
+
+    .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #f5f7fa;
+        border-radius: 12px;
+        margin-bottom: 12px;
+
+        ion-icon {
+            font-size: 20px;
+            color: #999;
+        }
+
+        input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+
+            &::placeholder {
+                color: #999;
+            }
+        }
+    }
+
+    .filter-chips {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: #f5f7fa;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &.active {
+                background: #667eea;
+                color: white;
+            }
+
+            &.warning.active {
+                background: #FFA000;
+            }
+        }
+    }
+}
+
+// Stats Row
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 0 16px 16px;
+
+    .stat-item {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+        .stat-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0 0 4px 0;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin: 0;
+        }
+
+        &.warning .stat-value {
+            color: #FFA000;
+        }
+    }
+}
+
+// Products List
+.products-list {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .product-card {
+        background: white;
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f5f7fa;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+
+            .product-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 4px;
+
+                h4 {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #333;
+                    margin: 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .status-badge {
+                    padding: 4px 10px;
+                    border-radius: 12px;
+                    font-size: 10px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    flex-shrink: 0;
+                    margin-left: 8px;
+
+                    &.active {
+                        background: rgba(76, 175, 80, 0.15);
+                        color: #388E3C;
+                    }
+
+                    &.inactive {
+                        background: rgba(158, 158, 158, 0.15);
+                        color: #757575;
+                    }
+                }
+            }
+
+            .product-category {
+                font-size: 12px;
+                color: #999;
+                margin: 0 0 8px 0;
+            }
+
+            .product-details {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                .detail-item {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 13px;
+
+                    .label {
+                        color: #999;
+                    }
+
+                    .value {
+                        font-weight: 600;
+                        color: #333;
+
+                        &.price {
+                            color: #667eea;
+                        }
+
+                        &.warning {
+                            color: #ff6b6b;
+                        }
+                    }
+                }
+            }
+        }
+
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+
+            .action-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background: #f5f7fa;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                ion-icon {
+                    font-size: 18px;
+                    color: #667eea;
+                }
+
+                &:active {
+                    transform: scale(0.9);
+                }
+
+                &.danger ion-icon {
+                    color: #ff6b6b;
+                }
+            }
+        }
+    }
+}
+
+// ============= VOUCHERS VIEW =============
+
+.vouchers-view {
+    padding-bottom: 80px;
+}
+
+// Voucher Stats
+.voucher-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 16px;
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+        .stat-icon {
+            font-size: 28px;
+            color: #667eea;
+        }
+
+        .stat-info {
+            text-align: center;
+
+            .stat-value {
+                font-family: 'Poppins', sans-serif;
+                font-size: 20px;
+                font-weight: 700;
+                color: #333;
+                margin: 0 0 2px 0;
+            }
+
+            .stat-label {
+                font-size: 11px;
+                color: #999;
+                margin: 0;
+            }
+        }
+
+        &.success .stat-icon {
+            color: #10B981;
+        }
+
+        &.warning .stat-icon {
+            color: #FFA000;
+        }
+    }
+}
+
+// Voucher Filter
+.voucher-filter {
+    padding: 0 16px 16px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-chip {
+        padding: 8px 16px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #666;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+    }
+}
+
+// Vouchers List
+.vouchers-list {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .voucher-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-left: 4px solid #667eea;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .voucher-code {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                ion-icon {
+                    font-size: 24px;
+                    color: #667eea;
+                }
+
+                h3 {
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #333;
+                    margin: 0;
+                }
+            }
+
+            .voucher-status {
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+
+                &.active {
+                    background: rgba(76, 175, 80, 0.15);
+                    color: #388E3C;
+                }
+
+                &.scheduled {
+                    background: rgba(255, 193, 7, 0.15);
+                    color: #FFA000;
+                }
+
+                &.expired {
+                    background: rgba(158, 158, 158, 0.15);
+                    color: #757575;
+                }
+            }
+        }
+
+        .voucher-discount {
+            margin-bottom: 12px;
+
+            .discount-label {
+                font-size: 13px;
+                color: #999;
+            }
+
+            .discount-value {
+                font-family: 'Poppins', sans-serif;
+                font-size: 24px;
+                font-weight: 700;
+                color: #667eea;
+                margin-left: 8px;
+            }
+        }
+
+        .voucher-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+
+            .detail-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: #666;
+
+                ion-icon {
+                    font-size: 16px;
+                    color: #999;
+                }
+            }
+        }
+
+        .voucher-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+
+            .progress-bar {
+                flex: 1;
+                height: 8px;
+                background: #f0f0f0;
+                border-radius: 4px;
+                overflow: hidden;
+
+                .progress-fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                    transition: width 0.3s ease;
+                }
+            }
+
+            .progress-text {
+                font-size: 12px;
+                font-weight: 700;
+                color: #667eea;
+                min-width: 40px;
+                text-align: right;
+            }
+        }
+
+        .voucher-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+
+            .action-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background: #f5f7fa;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                ion-icon {
+                    font-size: 18px;
+                    color: #667eea;
+                }
+
+                &:active {
+                    transform: scale(0.9);
+                }
+
+                &.danger ion-icon {
+                    color: #ff6b6b;
+                }
+            }
+        }
+    }
+}
+
+// Empty State
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+
+    .empty-icon {
+        font-size: 80px;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #666;
+        margin: 0 0 8px 0;
+    }
+
+    p {
+        font-size: 14px;
+        color: #999;
+        margin: 0;
+    }
+}
+
+// FAB Button
+.fab-add {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+
+    ion-icon {
+        font-size: 28px;
+    }
+}
+
+// ============= MODAL FORMS =============
+
+.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 100000 !important;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+    z-index: 100001 !important;
+    position: relative;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+    }
+
+    .close-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f5f7fa;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        ion-icon {
+            font-size: 24px;
+            color: #999;
+        }
+
+        &:hover {
+            background: #e0e0e0;
+        }
+
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+
+    .form-group {
+        margin-bottom: 16px;
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #333 !important;
+            background-color: #ffffff !important;
+            outline: none;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            &:focus {
+                border-color: #667eea;
+                background-color: #ffffff !important;
+            }
+
+            &::placeholder {
+                color: #999 !important;
+            }
+
+            option {
+                background-color: #ffffff;
+                color: #333;
+            }
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #999;
+            margin: 6px 0 0 0;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+
+            .toggle-option {
+                flex: 1;
+                padding: 12px;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+
+                input[type="radio"] {
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                input[type="radio"]:checked~span,
+                &:has(input[type="radio"]:checked) {
+                    border-color: #667eea;
+                    background: rgba(102, 126, 234, 0.1);
+
+                    span {
+                        color: #667eea;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 12px;
+
+    button {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.btn-cancel {
+            background: #f5f7fa;
+            color: #666;
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+
+        &.btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// Responsive
+@media (max-width: 480px) {
+    .stats-row .stat-item .stat-value {
+        font-size: 20px;
+    }
+
+    .voucher-card .voucher-discount .discount-value {
+        font-size: 20px;
+    }
+
+    .modal-content {
+        margin: 0;
+        max-height: 95vh;
+        border-radius: 16px 16px 0 0;
+        align-self: flex-end;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+}

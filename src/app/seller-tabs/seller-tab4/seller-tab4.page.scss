@@ -1,0 +1,568 @@
+.profile-content {
+    --background: #f5f7fa;
+}
+
+// Profile Header
+.profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px 60px;
+    position: relative;
+
+    .profile-avatar-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 16px;
+
+            .avatar-img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                border: 4px solid white;
+                object-fit: cover;
+                background: white;
+            }
+
+            .edit-avatar-btn {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #667eea;
+                border: 3px solid white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                ion-icon {
+                    font-size: 16px;
+                    color: white;
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 4px 0;
+        }
+
+        .store-email {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+    }
+}
+
+// Stats Section
+.stats-section {
+    padding: 0 16px;
+    margin-top: -40px;
+    position: relative;
+    z-index: 1;
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 12px;
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                ion-icon {
+                    font-size: 28px;
+                    color: white;
+                }
+            }
+
+            .stat-info {
+                flex: 1;
+                min-width: 0;
+
+                .stat-label {
+                    font-size: 11px;
+                    color: #999;
+                    margin: 0 0 6px 0;
+                }
+
+                .stat-value {
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #333;
+                    margin: 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &.primary .stat-icon {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+
+            &.warning .stat-icon {
+                background: linear-gradient(135deg, #FFA000 0%, #FF6F00 100%);
+            }
+
+            &.success .stat-icon {
+                background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            }
+
+            &.info .stat-icon {
+                background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+            }
+        }
+    }
+}
+
+// Menu Sections
+.menu-sections {
+    padding: 20px 16px 32px;
+
+    .menu-section {
+        margin-bottom: 24px;
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 12px 4px;
+        }
+
+        .menu-items {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 20px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-bottom: 1px solid #f5f5f5;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &:active {
+                    background: #f5f7fa;
+                }
+
+                .menu-item-left {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+
+                    .menu-icon {
+                        font-size: 24px;
+                        color: #667eea;
+                    }
+
+                    .menu-label {
+                        font-size: 14px;
+                        color: #333;
+                        font-weight: 500;
+                    }
+                }
+
+                .arrow-icon {
+                    font-size: 20px;
+                    color: #ccc;
+                }
+
+                .verification-badge {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 6px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 600;
+
+                    &.verified {
+                        background: rgba(16, 185, 129, 0.1);
+                        color: #10B981;
+
+                        ion-icon {
+                            font-size: 16px;
+                        }
+                    }
+                }
+
+                .menu-item-value {
+                    font-size: 13px;
+                    color: #999;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .app-info {
+            text-align: center;
+            padding: 20px;
+
+            .app-version,
+            .app-copyright {
+                font-size: 12px;
+                color: #999;
+                margin: 4px 0;
+            }
+        }
+    }
+
+    .logout-section {
+        margin-top: 32px;
+
+        .logout-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+            ion-icon {
+                font-size: 22px;
+            }
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+    }
+}
+
+// Modal Styling
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+
+    .modal-content {
+        background: white;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+
+        &.store-info-modal,
+        &.faq-modal {
+            max-width: 600px;
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+
+            h2 {
+                font-family: 'Poppins', sans-serif;
+                font-size: 18px;
+                font-weight: 700;
+                color: #333;
+                margin: 0;
+            }
+
+            .close-btn {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background: #f5f7fa;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                ion-icon {
+                    font-size: 24px;
+                    color: #666;
+                }
+
+                &:active {
+                    background: #e5e7eb;
+                }
+            }
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+
+            .form-group {
+                margin-bottom: 20px;
+
+                label {
+                    display: block;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #333;
+                    margin-bottom: 8px;
+                }
+
+                input,
+                textarea {
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-family: inherit;
+                    transition: all 0.2s ease;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #667eea;
+                        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                    }
+                }
+
+                textarea {
+                    resize: vertical;
+                    min-height: 80px;
+                }
+            }
+
+            .info-item {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #f5f5f5;
+
+                &:last-child {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+
+                .info-label {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #999;
+                    margin-bottom: 8px;
+                    text-transform: uppercase;
+
+                    ion-icon {
+                        font-size: 18px;
+                        color: #667eea;
+                    }
+                }
+
+                .info-value {
+                    font-size: 14px;
+                    color: #333;
+                    line-height: 1.6;
+                }
+            }
+
+            .toggle-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 0;
+                border-bottom: 1px solid #f5f5f5;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .toggle-label {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+
+                    ion-icon {
+                        font-size: 24px;
+                        color: #667eea;
+                    }
+
+                    span {
+                        font-size: 14px;
+                        color: #333;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .faq-list {
+                .faq-item {
+                    border-bottom: 1px solid #f5f5f5;
+                    padding: 16px 0;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    .faq-question {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 12px;
+                        cursor: pointer;
+                        padding: 8px 0;
+
+                        span {
+                            font-size: 14px;
+                            font-weight: 600;
+                            color: #333;
+                            flex: 1;
+                        }
+
+                        ion-icon {
+                            font-size: 20px;
+                            color: #667eea;
+                            flex-shrink: 0;
+                        }
+                    }
+
+                    .faq-answer {
+                        padding: 12px 0 8px 0;
+                        font-size: 13px;
+                        color: #666;
+                        line-height: 1.6;
+                        animation: fadeIn 0.3s ease;
+                    }
+                }
+            }
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f5f5f5;
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+
+            button {
+                flex: 1;
+                padding: 14px 20px;
+                border: none;
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &.btn-primary {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+                    &:active {
+                        transform: scale(0.98);
+                    }
+
+                    &.full-width {
+                        width: 100%;
+                    }
+                }
+
+                &.btn-secondary {
+                    background: #f5f7fa;
+                    color: #666;
+
+                    &:active {
+                        background: #e5e7eb;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Responsive
+@media (max-width: 480px) {
+    .stats-grid {
+        .stat-card {
+            .stat-info {
+                .stat-value {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+
+        .modal-content {
+            border-radius: 20px 20px 0 0;
+            max-height: 95vh;
+        }
+    }
+}

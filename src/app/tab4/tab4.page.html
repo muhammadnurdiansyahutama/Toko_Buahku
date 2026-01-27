@@ -1,0 +1,176 @@
+<ion-content [fullscreen]="true" class="profile-content">
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <img src="assets/avatar-placeholder.png" alt="Profile Picture">
+      <button class="edit-avatar-btn">
+        <ion-icon name="camera"></ion-icon>
+      </button>
+    </div>
+    <h2 class="profile-name">{{ userName }}</h2>
+    <p class="profile-email">{{ userEmail }}</p>
+    <button class="edit-profile-btn" (click)="editProfile()">
+      <ion-icon name="create-outline"></ion-icon>
+      Edit Profil
+    </button>
+  </div>
+
+  <!-- Account Stats -->
+  <div class="account-stats">
+    <div class="stat-item" (click)="goToOrders()">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <div class="stat-info">
+        <p class="stat-value">{{ totalOrders }}</p>
+        <p class="stat-label">Pesanan</p>
+      </div>
+    </div>
+    <div class="stat-item" (click)="goToWishlist()">
+      <ion-icon name="heart-outline"></ion-icon>
+      <div class="stat-info">
+        <p class="stat-value">{{ totalWishlist }}</p>
+        <p class="stat-label">Favorit</p>
+      </div>
+    </div>
+    <div class="stat-item" (click)="goToReviews()">
+      <ion-icon name="star-outline"></ion-icon>
+      <div class="stat-info">
+        <p class="stat-value">{{ totalReviews }}</p>
+        <p class="stat-label">Ulasan</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu Section -->
+  <div class="menu-section">
+    <div class="menu-group">
+      <h3 class="group-title">Akun Saya</h3>
+
+      <div class="menu-item" (click)="navigateTo('addresses')">
+        <div class="menu-icon">
+          <ion-icon name="location-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Alamat Pengiriman</h4>
+          <p>Kelola alamat pengiriman Anda</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('payment')">
+        <div class="menu-icon">
+          <ion-icon name="card-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Metode Pembayaran</h4>
+          <p>Kelola metode pembayaran Anda</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('vouchers')">
+        <div class="menu-icon">
+          <ion-icon name="pricetag-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Voucher Saya</h4>
+          <p>Lihat voucher dan promo aktif</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <h3 class="group-title">Pengaturan</h3>
+
+      <div class="menu-item" (click)="navigateTo('notifications')">
+        <div class="menu-icon">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Notifikasi</h4>
+          <p>Atur preferensi notifikasi</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('language')">
+        <div class="menu-icon">
+          <ion-icon name="language-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Bahasa</h4>
+          <p>Indonesia</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('theme')">
+        <div class="menu-icon">
+          <ion-icon name="moon-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Mode Gelap</h4>
+          <p>Gunakan tema gelap</p>
+        </div>
+        <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <h3 class="group-title">Bantuan & Dukungan</h3>
+
+      <div class="menu-item" (click)="navigateTo('help')">
+        <div class="menu-icon">
+          <ion-icon name="help-circle-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Pusat Bantuan</h4>
+          <p>FAQ dan panduan</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('contact')">
+        <div class="menu-icon">
+          <ion-icon name="chatbubble-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Hubungi Kami</h4>
+          <p>Customer service 24/7</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+
+      <div class="menu-item" (click)="navigateTo('about')">
+        <div class="menu-icon">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </div>
+        <div class="menu-content">
+          <h4>Tentang Aplikasi</h4>
+          <p>Versi 1.0.0</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <div class="logout-section">
+    <button class="logout-btn" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      Keluar dari Akun
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="profile-footer">
+    <p>Toko Buah Segar © 2026</p>
+    <div class="footer-links">
+      <a (click)="openPrivacy()">Kebijakan Privasi</a>
+      <span>•</span>
+      <a (click)="openTerms()">Syarat & Ketentuan</a>
+    </div>
+  </div>
+
+</ion-content>

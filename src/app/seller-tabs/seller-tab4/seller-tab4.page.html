@@ -1,0 +1,398 @@
+<ion-content class="profile-content">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-avatar-section">
+      <div class="avatar-container">
+        <img [src]="profileData.avatar" alt="Avatar" class="avatar-img">
+        <button class="edit-avatar-btn" (click)="openEditProfile()">
+          <ion-icon name="camera-outline"></ion-icon>
+        </button>
+      </div>
+      <h2>{{profileData.storeName}}</h2>
+      <p class="store-email">{{profileData.email}}</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card primary">
+        <div class="stat-icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Total Pendapatan</p>
+          <h3 class="stat-value">{{profileData.totalRevenue}}</h3>
+        </div>
+      </div>
+
+      <div class="stat-card success">
+        <div class="stat-icon">
+          <ion-icon name="cube-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Produk Terjual</p>
+          <h3 class="stat-value">{{profileData.productsSold}}</h3>
+        </div>
+      </div>
+
+      <div class="stat-card warning">
+        <div class="stat-icon">
+          <ion-icon name="star-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Rating Toko</p>
+          <h3 class="stat-value">{{profileData.rating}}</h3>
+        </div>
+      </div>
+
+      <div class="stat-card info">
+        <div class="stat-icon">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Member Sejak</p>
+          <h3 class="stat-value">{{profileData.memberSince}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu Sections -->
+  <div class="menu-sections">
+    <!-- Akun Saya -->
+    <div class="menu-section">
+      <h3 class="section-title">Akun Saya</h3>
+      <div class="menu-items">
+        <div class="menu-item" (click)="openEditProfile()">
+          <div class="menu-item-left">
+            <ion-icon name="person-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Edit Profil</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="openChangePassword()">
+          <div class="menu-item-left">
+            <ion-icon name="lock-closed-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Ganti Password</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="showVerificationInfo()">
+          <div class="menu-item-left">
+            <ion-icon name="shield-checkmark-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Verifikasi Akun</span>
+          </div>
+          <div class="verification-badge verified">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            Terverifikasi
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toko Saya -->
+    <div class="menu-section">
+      <h3 class="section-title">Toko Saya</h3>
+      <div class="menu-items">
+        <div class="menu-item" (click)="openStoreInfo()">
+          <div class="menu-item-left">
+            <ion-icon name="storefront-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Informasi Toko</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="showOperatingHours()">
+          <div class="menu-item-left">
+            <ion-icon name="time-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Jam Operasional</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="showStoreAddress()">
+          <div class="menu-item-left">
+            <ion-icon name="location-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Alamat Toko</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pengaturan -->
+    <div class="menu-section">
+      <h3 class="section-title">Pengaturan</h3>
+      <div class="menu-items">
+        <div class="menu-item" (click)="openNotificationSettings()">
+          <div class="menu-item-left">
+            <ion-icon name="notifications-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Notifikasi</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="showPrivacySettings()">
+          <div class="menu-item-left">
+            <ion-icon name="eye-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Privasi</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="showLanguageOptions()">
+          <div class="menu-item-left">
+            <ion-icon name="globe-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Bahasa</span>
+          </div>
+          <div class="menu-item-value">Indonesia</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bantuan -->
+    <div class="menu-section">
+      <h3 class="section-title">Bantuan</h3>
+      <div class="menu-items">
+        <div class="menu-item" (click)="showHelpCenter()">
+          <div class="menu-item-left">
+            <ion-icon name="help-circle-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Pusat Bantuan</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="contactSupport()">
+          <div class="menu-item-left">
+            <ion-icon name="headset-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">Hubungi Support</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="openFAQ()">
+          <div class="menu-item-left">
+            <ion-icon name="chatbubble-ellipses-outline" class="menu-icon"></ion-icon>
+            <span class="menu-label">FAQ</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Info -->
+    <div class="menu-section">
+      <div class="app-info">
+        <p class="app-version">Versi Aplikasi 1.0.0</p>
+        <p class="app-copyright">© 2024 Toko Buah Segar</p>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div class="logout-section">
+      <button class="logout-btn" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Keluar
+      </button>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" *ngIf="showEditProfileModal" (click)="closeEditProfile()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Edit Profil</h2>
+        <button class="close-btn" (click)="closeEditProfile()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nama Toko</label>
+          <input type="text" [(ngModel)]="editProfileData.storeName" placeholder="Nama Toko">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="editProfileData.email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label>Nomor Telepon</label>
+          <input type="tel" [(ngModel)]="editProfileData.phone" placeholder="Nomor Telepon">
+        </div>
+        <div class="form-group">
+          <label>Deskripsi Toko</label>
+          <textarea [(ngModel)]="editProfileData.description" rows="3" placeholder="Deskripsi Toko"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeEditProfile()">Batal</button>
+        <button class="btn-primary" (click)="saveProfile()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal-overlay" *ngIf="showChangePasswordModal" (click)="closeChangePassword()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Ganti Password</h2>
+        <button class="close-btn" (click)="closeChangePassword()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Password Lama</label>
+          <input type="password" [(ngModel)]="passwordData.oldPassword" placeholder="Masukkan password lama">
+        </div>
+        <div class="form-group">
+          <label>Password Baru</label>
+          <input type="password" [(ngModel)]="passwordData.newPassword" placeholder="Masukkan password baru">
+        </div>
+        <div class="form-group">
+          <label>Konfirmasi Password Baru</label>
+          <input type="password" [(ngModel)]="passwordData.confirmPassword" placeholder="Konfirmasi password baru">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeChangePassword()">Batal</button>
+        <button class="btn-primary" (click)="changePassword()">Ubah Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Store Info Modal -->
+  <div class="modal-overlay" *ngIf="showStoreInfoModal" (click)="closeStoreInfo()">
+    <div class="modal-content store-info-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Informasi Toko</h2>
+        <button class="close-btn" (click)="closeStoreInfo()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="storefront-outline"></ion-icon>
+            Nama Toko
+          </div>
+          <div class="info-value">{{profileData.storeName}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="mail-outline"></ion-icon>
+            Email
+          </div>
+          <div class="info-value">{{profileData.email}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="call-outline"></ion-icon>
+            Telepon
+          </div>
+          <div class="info-value">{{storeInfo.phone}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="location-outline"></ion-icon>
+            Alamat
+          </div>
+          <div class="info-value">{{storeInfo.address}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="time-outline"></ion-icon>
+            Jam Operasional
+          </div>
+          <div class="info-value">{{storeInfo.operatingHours}}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Deskripsi
+          </div>
+          <div class="info-value">{{storeInfo.description}}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary full-width" (click)="closeStoreInfo()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings Modal -->
+  <div class="modal-overlay" *ngIf="showNotificationModal" (click)="closeNotificationSettings()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Pengaturan Notifikasi</h2>
+        <button class="close-btn" (click)="closeNotificationSettings()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="toggle-item">
+          <div class="toggle-label">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span>Pesanan Baru</span>
+          </div>
+          <ion-toggle [(ngModel)]="notificationSettings.newOrders"></ion-toggle>
+        </div>
+        <div class="toggle-item">
+          <div class="toggle-label">
+            <ion-icon name="star-outline"></ion-icon>
+            <span>Ulasan Produk</span>
+          </div>
+          <ion-toggle [(ngModel)]="notificationSettings.reviews"></ion-toggle>
+        </div>
+        <div class="toggle-item">
+          <div class="toggle-label">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            <span>Promosi & Penawaran</span>
+          </div>
+          <ion-toggle [(ngModel)]="notificationSettings.promotions"></ion-toggle>
+        </div>
+        <div class="toggle-item">
+          <div class="toggle-label">
+            <ion-icon name="mail-outline"></ion-icon>
+            <span>Email Notifikasi</span>
+          </div>
+          <ion-toggle [(ngModel)]="notificationSettings.emailNotifications"></ion-toggle>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary full-width" (click)="saveNotificationSettings()">Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Modal -->
+  <div class="modal-overlay" *ngIf="showFAQModal" (click)="closeFAQ()">
+    <div class="modal-content faq-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>FAQ - Pertanyaan Umum</h2>
+        <button class="close-btn" (click)="closeFAQ()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="faq-list">
+          <div class="faq-item" *ngFor="let faq of faqList; let i = index">
+            <div class="faq-question" (click)="toggleFAQ(i)">
+              <span>{{faq.question}}</span>
+              <ion-icon [name]="faq.expanded ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+            </div>
+            <div class="faq-answer" *ngIf="faq.expanded">
+              {{faq.answer}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary full-width" (click)="closeFAQ()">Tutup</button>
+      </div>
+    </div>
+  </div>
+</ion-content>

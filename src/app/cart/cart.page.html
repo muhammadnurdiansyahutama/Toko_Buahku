@@ -1,0 +1,141 @@
+<ion-header [translucent]="true" class="cart-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="header-title">
+      <span>Keranjang Belanja</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="cart-content">
+
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Memuat keranjang...</p>
+  </div>
+
+  <!-- Cart Items -->
+  <div class="cart-section" *ngIf="!isLoading && cartItems && cartItems.length > 0">
+    <div class="cart-items-list">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <div class="item-checkbox">
+          <input type="checkbox" [(ngModel)]="item.selected" (change)="updateTotal()">
+        </div>
+
+        <div class="item-image">
+          <img [src]="item.image || 'assets/placeholder.png'" [alt]="item.name">
+        </div>
+
+        <div class="item-details">
+          <h4 class="item-name">{{ item.name }}</h4>
+          <p class="item-description" *ngIf="item.description">{{ item.description }}</p>
+          <div class="item-price-section">
+            <p class="item-price">Rp {{ (item.price || 0) | number:'1.0-0' }}/kg</p>
+            <p class="item-original-price" *ngIf="item.originalPrice && item.originalPrice > item.price">
+              Rp {{ item.originalPrice | number:'1.0-0' }}
+            </p>
+            <span class="item-discount" *ngIf="item.discount && item.discount > 0">-{{ item.discount }}%</span>
+          </div>
+        </div>
+
+        <div class="item-actions">
+          <button class="remove-btn" (click)="removeItem(item)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+          <div class="quantity-control">
+            <button class="qty-btn" (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">
+              <ion-icon name="remove"></ion-icon>
+            </button>
+            <span class="qty-value">{{ item.quantity || 0 }}</span>
+            <button class="qty-btn" (click)="increaseQuantity(item)" [disabled]="item.quantity >= (item.stock || 99)">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voucher Section -->
+    <div class="voucher-section" (click)="selectVoucher()">
+      <ion-icon name="pricetag-outline" class="voucher-icon"></ion-icon>
+      <div class="voucher-content">
+        <p class="voucher-title">Gunakan Voucher</p>
+        <p class="voucher-subtitle" *ngIf="!appliedVoucher">Pilih atau masukkan kode voucher</p>
+        <p class="voucher-applied" *ngIf="appliedVoucher">
+          {{ appliedVoucher.code }} - Hemat Rp {{ (appliedVoucher.discount || 0) | number:'1.0-0' }}
+        </p>
+      </div>
+      <button class="voucher-btn" (click)="selectVoucher(); $event.stopPropagation()">
+        <span *ngIf="!appliedVoucher">Pilih</span>
+        <span *ngIf="appliedVoucher">Ubah</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="summary-section">
+      <h3 class="summary-title">Ringkasan Belanja</h3>
+
+      <div class="summary-row">
+        <span class="summary-label">Subtotal ({{ selectedItemCount || 0 }} item)</span>
+        <span class="summary-value">Rp {{ (subtotal || 0) | number:'1.0-0' }}</span>
+      </div>
+
+      <div class="summary-row" *ngIf="appliedVoucher && appliedVoucher.discount">
+        <span class="summary-label">Diskon Voucher</span>
+        <span class="summary-value discount">-Rp {{ (appliedVoucher.discount || 0) | number:'1.0-0' }}</span>
+      </div>
+
+      <div class="summary-row">
+        <span class="summary-label">Ongkos Kirim</span>
+        <span class="summary-value">
+          <span *ngIf="shippingCost === 0">GRATIS</span>
+          <span *ngIf="shippingCost > 0">Rp {{ shippingCost | number:'1.0-0' }}</span>
+        </span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-row total">
+        <span class="summary-label">Total</span>
+        <span class="summary-value">Rp {{ (total || 0) | number:'1.0-0' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty Cart -->
+  <div class="empty-cart" *ngIf="!isLoading && (!cartItems || cartItems.length === 0)">
+    <ion-icon name="cart-outline" class="empty-icon"></ion-icon>
+    <h3>Keranjang Belanja Kosong</h3>
+    <p>Yuk, mulai belanja buah segar favorit Anda!</p>
+    <button class="shop-btn" (click)="goToShop()">
+      <ion-icon name="storefront-outline"></ion-icon>
+      Mulai Belanja
+    </button>
+  </div>
+
+</ion-content>
+
+<!-- Checkout Footer -->
+<ion-footer class="cart-footer" *ngIf="!isLoading && cartItems && cartItems.length > 0">
+  <div class="footer-content">
+    <div class="select-all">
+      <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()">
+      <span>Pilih Semua</span>
+    </div>
+    <div class="footer-summary">
+      <div class="footer-total">
+        <span class="footer-label">Total</span>
+        <span class="footer-price">Rp {{ (total || 0) | number:'1.0-0' }}</span>
+      </div>
+      <button class="checkout-btn" [disabled]="selectedItemCount === 0" (click)="checkout()">
+        Checkout ({{ selectedItemCount || 0 }})
+      </button>
+    </div>
+  </div>
+</ion-footer>

@@ -1,0 +1,125 @@
+<ion-content [fullscreen]="true" class="register-content">
+    <div class="register-container">
+        <!-- Logo & Welcome Section -->
+        <div class="header-section">
+            <img src="assets/logo.png" alt="Toko Buah Logo" class="logo">
+            <h1 class="welcome-title">Daftar Akun Baru</h1>
+            <p class="welcome-subtitle">Bergabung dengan Toko Buah Segar</p>
+        </div>
+
+        <!-- Register Form Card -->
+        <div class="form-card">
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+                <!-- Nama Lengkap -->
+                <div class="input-wrapper">
+                    <ion-icon name="person-outline" class="input-icon"></ion-icon>
+                    <input type="text" formControlName="nama" placeholder="Nama Lengkap" class="custom-input"
+                        [class.error]="registerForm.get('nama')?.invalid && registerForm.get('nama')?.touched">
+                    <div class="error-message"
+                        *ngIf="registerForm.get('nama')?.invalid && registerForm.get('nama')?.touched">
+                        <small>Nama harus diisi (minimal 3 karakter)</small>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="input-wrapper">
+                    <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                    <input type="email" formControlName="email" placeholder="Email" class="custom-input"
+                        [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                    <div class="error-message"
+                        *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                        <small>Email tidak valid</small>
+                    </div>
+                </div>
+
+                <!-- Nomor Telepon -->
+                <div class="input-wrapper">
+                    <ion-icon name="call-outline" class="input-icon"></ion-icon>
+                    <input type="tel" formControlName="telepon" placeholder="Nomor Telepon (08xx)" class="custom-input"
+                        [class.error]="registerForm.get('telepon')?.invalid && registerForm.get('telepon')?.touched">
+                    <div class="error-message"
+                        *ngIf="registerForm.get('telepon')?.invalid && registerForm.get('telepon')?.touched">
+                        <small>Nomor telepon tidak valid (min 10 digit)</small>
+                    </div>
+                </div>
+
+                <!-- Alamat -->
+                <div class="input-wrapper">
+                    <ion-icon name="location-outline" class="input-icon"></ion-icon>
+                    <textarea formControlName="alamat" placeholder="Alamat Lengkap" class="custom-textarea" rows="3"
+                        [class.error]="registerForm.get('alamat')?.invalid && registerForm.get('alamat')?.touched"></textarea>
+                    <div class="error-message"
+                        *ngIf="registerForm.get('alamat')?.invalid && registerForm.get('alamat')?.touched">
+                        <small>Alamat harus diisi (minimal 10 karakter)</small>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="input-wrapper">
+                    <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                    <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password"
+                        class="custom-input"
+                        [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                    <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" class="toggle-password"
+                        (click)="togglePassword()"></ion-icon>
+                    <div class="error-message"
+                        *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                        <small>Password minimal 6 karakter</small>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="input-wrapper">
+                    <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                        placeholder="Konfirmasi Password" class="custom-input"
+                        [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+                    <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'" class="toggle-password"
+                        (click)="toggleConfirmPassword()"></ion-icon>
+                    <div class="error-message"
+                        *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+                        <small>Password tidak cocok</small>
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="checkbox-wrapper">
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="agreeTerms">
+                        <span>Saya setuju dengan <a href="#" class="link">syarat & ketentuan</a></span>
+                    </label>
+                    <div class="error-message"
+                        *ngIf="registerForm.get('agreeTerms')?.invalid && registerForm.get('agreeTerms')?.touched">
+                        <small>Anda harus menyetujui syarat & ketentuan</small>
+                    </div>
+                </div>
+
+                <!-- Register Button -->
+                <button type="submit" class="btn-register" [disabled]="registerForm.invalid || isLoading">
+                    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                    <span *ngIf="!isLoading">Daftar</span>
+                </button>
+
+                <!-- Error Message -->
+                <div class="alert-error" *ngIf="errorMessage">
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                    {{ errorMessage }}
+                </div>
+
+            </form>
+
+            <!-- Login Link -->
+            <div class="footer-link">
+                <p>Sudah punya akun?
+                    <a (click)="goToLogin()" class="link-primary">Masuk di sini</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <p>Toko Buah Segar © 2026</p>
+        </div>
+    </div>
+</ion-content>

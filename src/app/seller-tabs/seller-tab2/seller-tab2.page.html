@@ -1,0 +1,406 @@
+<ion-header [translucent]="true" class="products-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-title class="header-title">
+      <span>Produk & Promosi</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Segment Tabs -->
+  <ion-toolbar class="segment-toolbar">
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="segmentChanged()">
+      <ion-segment-button value="products">
+        <ion-icon name="cube-outline"></ion-icon>
+        <ion-label>Produk</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="vouchers">
+        <ion-icon name="pricetag-outline"></ion-icon>
+        <ion-label>Voucher</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="products-content">
+
+  <!-- PRODUCTS VIEW -->
+  <div class="products-view" *ngIf="selectedSegment === 'products'">
+
+    <!-- Search & Filter -->
+    <div class="search-section">
+      <div class="search-bar">
+        <ion-icon name="search-outline"></ion-icon>
+        <input type="text" placeholder="Cari produk..." [(ngModel)]="searchQuery" (input)="filterProducts()">
+      </div>
+      <div class="filter-chips">
+        <div class="chip" [class.active]="selectedCategory === 'all'" (click)="selectCategory('all')">
+          Semua ({{ products.length }})
+        </div>
+        <div class="chip" [class.active]="selectedCategory === 'active'" (click)="selectCategory('active')">
+          Aktif ({{ getProductCount('active') }})
+        </div>
+        <div class="chip" [class.active]="selectedCategory === 'inactive'" (click)="selectCategory('inactive')">
+          Nonaktif ({{ getProductCount('inactive') }})
+        </div>
+        <div class="chip warning" [class.active]="selectedCategory === 'lowstock'" (click)="selectCategory('lowstock')">
+          Stok Rendah ({{ getProductCount('lowstock') }})
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Stats -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <p class="stat-value">{{ products.length }}</p>
+        <p class="stat-label">Total Produk</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-value">{{ getProductCount('active') }}</p>
+        <p class="stat-label">Aktif</p>
+      </div>
+      <div class="stat-item warning">
+        <p class="stat-value">{{ getProductCount('lowstock') }}</p>
+        <p class="stat-label">Stok Rendah</p>
+      </div>
+    </div>
+
+    <!-- Products List -->
+    <div class="products-list">
+      <div class="product-card" *ngFor="let product of filteredProducts" (click)="editProduct(product)">
+        <img [src]="product.image" [alt]="product.name" class="product-image">
+
+        <div class="product-info">
+          <div class="product-header">
+            <h4>{{ product.name }}</h4>
+            <div class="status-badge" [class]="product.status">
+              {{ product.status === 'active' ? 'Aktif' : 'Nonaktif' }}
+            </div>
+          </div>
+
+          <p class="product-category">{{ product.category_name || product.category }}</p>
+
+          <div class="product-details">
+            <div class="detail-item">
+              <span class="label">Harga:</span>
+              <span class="value price">Rp {{ product.price | number:'1.0-0' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Stok:</span>
+              <span class="value" [class.warning]="product.stock < 10">
+                {{ product.stock }} unit
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Terjual:</span>
+              <span class="value">{{ product.sold }} unit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn" (click)="toggleStatus(product, $event)">
+            <ion-icon [name]="product.status === 'active' ? 'pause-outline' : 'play-outline'"></ion-icon>
+          </button>
+          <button class="action-btn" (click)="editProduct(product, $event)">
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+          <button class="action-btn danger" (click)="deleteProduct(product, $event)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredProducts.length === 0">
+      <ion-icon name="cube-outline" class="empty-icon"></ion-icon>
+      <h3>Tidak ada produk</h3>
+      <p>Belum ada produk yang sesuai dengan filter</p>
+    </div>
+  </div>
+
+  <!-- VOUCHERS VIEW -->
+  <div class="vouchers-view" *ngIf="selectedSegment === 'vouchers'">
+
+    <!-- Voucher Stats -->
+    <div class="voucher-stats">
+      <div class="stat-card">
+        <ion-icon name="pricetag-outline" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">{{ vouchers.length }}</p>
+          <p class="stat-label">Total Voucher</p>
+        </div>
+      </div>
+      <div class="stat-card success">
+        <ion-icon name="checkmark-circle-outline" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">{{ getVoucherCount('active') }}</p>
+          <p class="stat-label">Aktif</p>
+        </div>
+      </div>
+      <div class="stat-card warning">
+        <ion-icon name="time-outline" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">{{ getVoucherCount('scheduled') }}</p>
+          <p class="stat-label">Terjadwal</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voucher Filter -->
+    <div class="voucher-filter">
+      <div class="filter-chip" [class.active]="selectedVoucherStatus === 'all'" (click)="selectedVoucherStatus = 'all'">
+        Semua
+      </div>
+      <div class="filter-chip" [class.active]="selectedVoucherStatus === 'active'"
+        (click)="selectedVoucherStatus = 'active'">
+        Aktif
+      </div>
+      <div class="filter-chip" [class.active]="selectedVoucherStatus === 'scheduled'"
+        (click)="selectedVoucherStatus = 'scheduled'">
+        Terjadwal
+      </div>
+      <div class="filter-chip" [class.active]="selectedVoucherStatus === 'expired'"
+        (click)="selectedVoucherStatus = 'expired'">
+        Kadaluarsa
+      </div>
+    </div>
+
+    <!-- Vouchers List -->
+    <div class="vouchers-list">
+      <div class="voucher-card" *ngFor="let voucher of getFilteredVouchers()" (click)="editVoucher(voucher)">
+
+        <div class="voucher-header">
+          <div class="voucher-code">
+            <ion-icon name="pricetag"></ion-icon>
+            <h3>{{ voucher.code }}</h3>
+          </div>
+          <div class="voucher-status" [class]="voucher.status">
+            {{ getVoucherStatusLabel(voucher.status) }}
+          </div>
+        </div>
+
+        <div class="voucher-discount">
+          <span class="discount-label">Discount:</span>
+          <span class="discount-value">
+            {{ voucher.type === 'percentage' ? voucher.discount + '%' : 'Rp ' + (voucher.discount | number:'1.0-0') }}
+          </span>
+        </div>
+
+        <div class="voucher-details">
+          <div class="detail-row">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span>Min. Belanja: Rp {{ voucher.minPurchase | number:'1.0-0' }}</span>
+          </div>
+          <div class="detail-row">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{ voucher.startDate | date:'dd MMM' }} - {{ voucher.endDate | date:'dd MMM yyyy' }}</span>
+          </div>
+          <div class="detail-row">
+            <ion-icon name="people-outline"></ion-icon>
+            <span>{{ voucher.used }}/{{ voucher.quota }} terpakai</span>
+          </div>
+        </div>
+
+        <div class="voucher-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(voucher.used / voucher.quota) * 100"></div>
+          </div>
+          <span class="progress-text">{{ ((voucher.used / voucher.quota) * 100).toFixed(0) }}%</span>
+        </div>
+
+        <div class="voucher-actions">
+          <button class="action-btn" (click)="toggleVoucherStatus(voucher, $event)">
+            <ion-icon [name]="voucher.status === 'active' ? 'pause' : 'play'"></ion-icon>
+          </button>
+          <button class="action-btn" (click)="editVoucher(voucher, $event)">
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+          <button class="action-btn danger" (click)="deleteVoucher(voucher, $event)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="getFilteredVouchers().length === 0">
+      <ion-icon name="pricetag-outline" class="empty-icon"></ion-icon>
+      <h3>Tidak ada voucher</h3>
+      <p>Belum ada voucher yang sesuai dengan filter</p>
+    </div>
+  </div>
+
+  <!-- FAB Buttons (Outside view divs) -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="selectedSegment === 'products'">
+    <ion-fab-button class="fab-add" (click)="showProductForm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="selectedSegment === 'vouchers'">
+    <ion-fab-button class="fab-add" (click)="showVoucherForm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<!-- Product Form Modal (Outside ion-content) -->
+<div class="modal-overlay" *ngIf="showingProductModal" (click)="closeProductForm()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editingProduct ? 'Edit Produk' : 'Tambah Produk Baru' }}</h2>
+      <button class="close-btn" (click)="closeProductForm()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nama Produk *</label>
+        <input type="text" placeholder="Masukkan nama produk" [(ngModel)]="productForm.name">
+      </div>
+
+      <div class="form-group">
+        <label>Kategori *</label>
+        <select [(ngModel)]="productForm.category_id">
+          <option value="">Pilih kategori</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Harga (Rp) *</label>
+          <input type="number" placeholder="0" [(ngModel)]="productForm.price">
+        </div>
+        <div class="form-group">
+          <label>Stok (unit) *</label>
+          <input type="number" placeholder="0" [(ngModel)]="productForm.stock">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <div class="toggle-group">
+          <label class="toggle-option">
+            <input type="radio" name="status" value="active" [(ngModel)]="productForm.status">
+            <span>Aktif</span>
+          </label>
+          <label class="toggle-option">
+            <input type="radio" name="status" value="inactive" [(ngModel)]="productForm.status">
+            <span>Nonaktif</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL Gambar</label>
+        <input type="text" placeholder="https://..." [(ngModel)]="productForm.image">
+        <p class="form-hint">Masukkan URL gambar produk</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeProductForm()">Batal</button>
+      <button class="btn-save" (click)="saveProduct()">
+        {{ editingProduct ? 'Update' : 'Simpan' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Voucher Form Modal (Outside ion-content) -->
+<div class="modal-overlay" *ngIf="showingVoucherModal" (click)="closeVoucherForm()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editingVoucher ? 'Edit Voucher' : 'Tambah Voucher Baru' }}</h2>
+      <button class="close-btn" (click)="closeVoucherForm()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Kode Voucher *</label>
+        <input type="text" placeholder="BUAHSEGAR50" [(ngModel)]="voucherForm.code" style="text-transform: uppercase;">
+      </div>
+
+      <div class="form-group">
+        <label>Tipe Diskon *</label>
+        <div class="toggle-group">
+          <label class="toggle-option">
+            <input type="radio" name="type" value="nominal" [(ngModel)]="voucherForm.type">
+            <span>Nominal (Rp)</span>
+          </label>
+          <label class="toggle-option">
+            <input type="radio" name="type" value="percentage" [(ngModel)]="voucherForm.type">
+            <span>Persentase (%)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="voucherForm.type === 'nominal'">
+        <label>Nilai Diskon (Rp) *</label>
+        <input type="number" placeholder="50000" [(ngModel)]="voucherForm.discount">
+      </div>
+
+      <div class="form-group" *ngIf="voucherForm.type === 'percentage'">
+        <label>Persentase Diskon (%) *</label>
+        <input type="number" placeholder="25" min="1" max="100" [(ngModel)]="voucherForm.discount">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Min. Belanja (Rp) *</label>
+          <input type="number" placeholder="100000" [(ngModel)]="voucherForm.minPurchase">
+        </div>
+        <div class="form-group">
+          <label>Kuota *</label>
+          <input type="number" placeholder="50" [(ngModel)]="voucherForm.quota">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tanggal Mulai *</label>
+          <input type="date" [(ngModel)]="voucherForm.startDate">
+        </div>
+        <div class="form-group">
+          <label>Tanggal Berakhir *</label>
+          <input type="date" [(ngModel)]="voucherForm.endDate">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <div class="toggle-group">
+          <label class="toggle-option">
+            <input type="radio" name="voucherStatus" value="active" [(ngModel)]="voucherForm.status">
+            <span>Aktif</span>
+          </label>
+          <label class="toggle-option">
+            <input type="radio" name="voucherStatus" value="scheduled" [(ngModel)]="voucherForm.status">
+            <span>Terjadwal</span>
+          </label>
+          <label class="toggle-option">
+            <input type="radio" name="voucherStatus" value="inactive" [(ngModel)]="voucherForm.status">
+            <span>Nonaktif</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeVoucherForm()">Batal</button>
+      <button class="btn-save" (click)="saveVoucher()">
+        {{ editingVoucher ? 'Update' : 'Simpan' }}
+      </button>
+    </div>
+  </div>
+</div>

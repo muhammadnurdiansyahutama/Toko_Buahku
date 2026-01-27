@@ -1,0 +1,89 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-container">
+    <!-- Logo & Welcome Section -->
+    <div class="header-section">
+      <img src="assets/logo.png" alt="Toko Buah Logo" class="logo">
+      <h1 class="welcome-title">Selamat Datang!</h1>
+      <p class="welcome-subtitle">Masuk ke akun Anda</p>
+    </div>
+
+    <!-- Login Form Card -->
+    <div class="form-card">
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        
+        <!-- Email Input -->
+        <div class="input-wrapper">
+          <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="Email"
+            class="custom-input"
+            [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <small>Email tidak valid</small>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="input-wrapper">
+          <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            formControlName="password"
+            placeholder="Password"
+            class="custom-input"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <ion-icon 
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" 
+            class="toggle-password"
+            (click)="togglePassword()"></ion-icon>
+          <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <small>Password minimal 6 karakter</small>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="options-row">
+          <label class="remember-me">
+            <input type="checkbox" [(ngModel)]="rememberMe" [ngModelOptions]="{standalone: true}">
+            <span>Ingat Saya</span>
+          </label>
+          <a class="forgot-password" (click)="onForgotPassword()">Lupa Password?</a>
+        </div>
+
+        <!-- Login Button -->
+        <button 
+          type="submit" 
+          class="btn-login" 
+          [disabled]="loginForm.invalid || isLoading">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Masuk</span>
+        </button>
+
+        <!-- Error Message -->
+        <div class="alert-error" *ngIf="errorMessage">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          {{ errorMessage }}
+        </div>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>atau</span>
+      </div>
+
+      <!-- Register Link -->
+      <button class="btn-register" (click)="goToRegister()">
+        <ion-icon name="person-add-outline"></ion-icon>
+        Daftar Sekarang
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-text">
+      <p>Toko Buah Segar © 2026</p>
+    </div>
+  </div>
+</ion-content>

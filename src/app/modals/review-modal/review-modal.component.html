@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Beri Ulasan</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="review-container">
+    <p class="order-info">
+      Order #{{ order?.order_number }}
+      <br>
+      <span class="date">{{ order?.created_at | date:'dd MMM yyyy, HH:mm' }}</span>
+    </p>
+
+    <div class="product-list">
+      <div class="product-item" *ngFor="let item of order?.items; let i = index">
+        <div class="product-header">
+          <img [src]="item.image || 'assets/placeholder-product.png'" alt="Product Image">
+          <div class="product-details">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.price | currency:'IDR':'symbol':'1.0-0' }} x {{ item.quantity }}</p>
+          </div>
+        </div>
+
+        <div class="rating-section" *ngIf="!item.submitted">
+          <p>Bagaimana kualitas produk ini?</p>
+          <div class="stars">
+            <ion-icon *ngFor="let star of [1,2,3,4,5]" [name]="item.rating >= star ? 'star' : 'star-outline'"
+              (click)="setRating(i, star)" [class.active]="item.rating >= star">
+            </ion-icon>
+          </div>
+
+          <ion-item class="comment-input" lines="none">
+            <ion-textarea [(ngModel)]="item.comment" placeholder="Tulis ulasan Anda di sini..." rows="3">
+            </ion-textarea>
+          </ion-item>
+
+          <ion-button expand="block" class=" submit-btn" [disabled]="item.rating === 0 || item.isSubmitting"
+            (click)="submitReview(item)">
+            <ion-spinner *ngIf="item.isSubmitting"></ion-spinner>
+            <span *ngIf="!item.isSubmitting">Kirim Ulasan</span>
+          </ion-button>
+        </div>
+
+        <div class="submitted-message" *ngIf="item.submitted">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+          <p>Ulasan terkirim!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

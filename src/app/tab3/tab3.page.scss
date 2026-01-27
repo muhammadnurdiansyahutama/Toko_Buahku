@@ -1,0 +1,360 @@
+.orders-content {
+    --background: #f5f7fa;
+}
+
+// Custom Toolbar
+.custom-toolbar {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --color: white;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+
+    .header-title {
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+
+            .logo-icon {
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+// Status Tabs
+.status-tabs {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab {
+        flex-shrink: 0;
+        padding: 16px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .badge {
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: #e0e0e0;
+            color: #666;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &.active {
+            color: #667eea;
+            font-weight: 700;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+
+            .badge {
+                background: #667eea;
+                color: white;
+            }
+        }
+
+        &:active {
+            background: rgba(102, 126, 234, 0.05);
+        }
+    }
+}
+
+// Orders Section
+.orders-section {
+    padding: 16px;
+}
+
+// Orders List
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .order-card {
+        background: white;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        // Order Header
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+
+            .order-info {
+                h4 {
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #333;
+                    margin: 0 0 4px 0;
+                }
+
+                .date {
+                    font-size: 12px;
+                    color: #999;
+                    margin: 0;
+                }
+            }
+
+            .status-badge {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+
+                &.processing {
+                    background: rgba(255, 193, 7, 0.15);
+                    color: #FFA000;
+                }
+
+                &.shipped {
+                    background: rgba(33, 150, 243, 0.15);
+                    color: #1976D2;
+                }
+
+                &.delivered {
+                    background: rgba(76, 175, 80, 0.15);
+                    color: #388E3C;
+                }
+
+                &.cancelled {
+                    background: rgba(244, 67, 54, 0.15);
+                    color: #D32F2F;
+                }
+            }
+        }
+
+        // Order Items
+        .order-items {
+            margin-bottom: 16px;
+
+            .item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 8px 0;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid #f5f5f5;
+                }
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 8px;
+                    object-fit: cover;
+                    background: #f5f7fa;
+                }
+
+                .item-info {
+                    flex: 1;
+
+                    .name {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #333;
+                        margin: 0 0 4px 0;
+                    }
+
+                    .quantity {
+                        font-size: 12px;
+                        color: #999;
+                        margin: 0;
+                    }
+                }
+
+                .subtotal {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #667eea;
+                    margin: 0;
+                }
+            }
+        }
+
+        // Order Footer
+        .order-footer {
+            .total {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 0;
+                margin-bottom: 12px;
+                border-top: 1px solid #f0f0f0;
+
+                .label {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                .amount {
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #667eea;
+                }
+            }
+
+            .actions {
+                display: flex;
+                gap: 8px;
+
+                button {
+                    flex: 1;
+                    padding: 10px 16px;
+                    border: none;
+                    border-radius: 10px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 13px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+
+                    ion-icon {
+                        font-size: 18px;
+                    }
+
+                    &:active {
+                        transform: scale(0.95);
+                    }
+                }
+
+                .btn-primary {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+                }
+
+                .btn-secondary {
+                    background: white;
+                    border: 2px solid #667eea;
+                    color: #667eea;
+                }
+
+                .btn-danger {
+                    background: white;
+                    border: 2px solid #ff6b6b;
+                    color: #ff6b6b;
+
+                    &:hover {
+                        background: #ff6b6b;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Empty State
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+
+    .empty-icon {
+        font-size: 100px;
+        color: #ccc;
+        margin-bottom: 24px;
+    }
+
+    h3 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #666;
+        margin: 0 0 12px 0;
+    }
+
+    p {
+        font-size: 15px;
+        color: #999;
+        margin: 0 0 32px 0;
+    }
+
+    .btn-shop {
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        ion-icon {
+            font-size: 20px;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 480px) {
+    .order-footer {
+        .actions {
+            flex-direction: column;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+}

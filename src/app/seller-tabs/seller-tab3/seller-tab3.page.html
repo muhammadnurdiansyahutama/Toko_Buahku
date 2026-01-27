@@ -1,0 +1,278 @@
+<ion-header [translucent]="true" class="orders-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-title class="header-title">
+      <span>Pesanan</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="orders-content">
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-bar">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="Cari pesanan..." [(ngModel)]="searchQuery" (input)="filterOrders()">
+    </div>
+  </div>
+
+  <!-- Filter Chips -->
+  <div class="filter-section">
+    <div class="filter-chips">
+      <div class="chip" [class.active]="selectedStatus === 'all'" (click)="selectStatus('all')">
+        Semua ({{ orders.length }})
+      </div>
+      <div class="chip" [class.active]="selectedStatus === 'pending'" (click)="selectStatus('pending')">
+        Pending ({{ getOrderCount('pending') }})
+      </div>
+      <div class="chip" [class.active]="selectedStatus === 'diproses'" (click)="selectStatus('diproses')">
+        Diproses ({{ getOrderCount('diproses') }})
+      </div>
+      <div class="chip" [class.active]="selectedStatus === 'dikirim'" (click)="selectStatus('dikirim')">
+        Dikirim ({{ getOrderCount('dikirim') }})
+      </div>
+      <div class="chip" [class.active]="selectedStatus === 'selesai'" (click)="selectStatus('selesai')">
+        Selesai ({{ getOrderCount('selesai') }})
+      </div>
+      <div class="chip" [class.active]="selectedStatus === 'dibatalkan'" (click)="selectStatus('dibatalkan')">
+        Dibatalkan ({{ getOrderCount('dibatalkan') }})
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-icon">
+        <ion-icon name="receipt-outline"></ion-icon>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ orders.length }}</p>
+        <p class="stat-label">Total Pesanan</p>
+      </div>
+    </div>
+    <div class="stat-item warning">
+      <div class="stat-icon">
+        <ion-icon name="time-outline"></ion-icon>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ getOrderCount('pending') }}</p>
+        <p class="stat-label">Pending</p>
+      </div>
+    </div>
+    <div class="stat-item success">
+      <div class="stat-icon">
+        <ion-icon name="cube-outline"></ion-icon>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ getOrderCount('diproses') }}</p>
+        <p class="stat-label">Diproses</p>
+      </div>
+    </div>
+    <div class="stat-item shipped">
+      <div class="stat-icon">
+        <ion-icon name="car-outline"></ion-icon>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ getOrderCount('dikirim') }}</p>
+        <p class="stat-label">Dikirim</p>
+      </div>
+    </div>
+    <div class="stat-item completed">
+      <div class="stat-icon">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ getOrderCount('selesai') }}</p>
+        <p class="stat-label">Selesai</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-list">
+    <div class="order-card" *ngFor="let order of filteredOrders">
+
+      <!-- Clickable area for opening detail modal -->
+      <div class="clickable-area" (click)="openDetailModal(order)">
+        <!-- Order Header -->
+        <div class="order-header">
+          <div class="order-id">
+            <ion-icon name="receipt-outline"></ion-icon>
+            <div>
+              <h4>{{ order.orderNumber }}</h4>
+              <p class="order-date">{{ order.orderDate | date:'dd MMM yyyy, HH:mm' }}</p>
+            </div>
+          </div>
+          <div class="status-badge" [class]="order.status">
+            {{ getStatusLabel(order.status) }}
+          </div>
+        </div>
+
+        <!-- Customer Info -->
+        <div class="customer-info">
+          <ion-icon name="person-outline"></ion-icon>
+          <div>
+            <p class="customer-name">{{ order.customerName }}</p>
+            <p class="customer-phone">{{ order.customerPhone }}</p>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items">
+          <div class="item" *ngFor="let item of order.items">
+            <img [src]="item.productImage" [alt]="item.productName">
+            <div class="item-info">
+              <p class="item-name">{{ item.productName }}</p>
+              <p class="item-qty">{{ item.quantity }}x Rp {{ item.price | number:'1.0-0' }}</p>
+            </div>
+            <p class="item-total">Rp {{ (item.quantity * item.price) | number:'1.0-0' }}</p>
+          </div>
+        </div>
+
+        <!-- Order Total -->
+        <div class="order-total">
+          <span>Total Pembayaran:</span>
+          <span class="total-amount">Rp {{ order.totalAmount | number:'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <!-- Order Actions (Outside clickable area) -->
+      <div class="order-actions" *ngIf="order.status !== 'selesai' && order.status !== 'dibatalkan'">
+        <ng-container *ngIf="order.status === 'pending'">
+          <button class="btn-secondary" (click)="$event.stopPropagation(); rejectOrder(order, $event)">
+            <ion-icon name="close-outline"></ion-icon>
+            Tolak
+          </button>
+          <button class="btn-primary" (click)="$event.stopPropagation(); acceptOrder(order, $event)">
+            <ion-icon name="checkmark-outline"></ion-icon>
+            Terima
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="order.status === 'diproses'">
+          <button class="btn-primary full-width" (click)="$event.stopPropagation(); markReadyToShip(order, $event)">
+            <ion-icon name="cube-outline"></ion-icon>
+            Siap Kirim
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="order.status === 'dikirim'">
+          <button class="btn-primary full-width" (click)="$event.stopPropagation(); markCompleted(order, $event)">
+            <ion-icon name="checkmark-done-outline"></ion-icon>
+            Pesanan Selesai
+          </button>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="filteredOrders.length === 0">
+    <ion-icon name="receipt-outline" class="empty-icon"></ion-icon>
+    <h3>Tidak ada pesanan</h3>
+    <p>Belum ada pesanan yang sesuai dengan filter</p>
+  </div>
+
+</ion-content>
+
+<!-- Order Detail Modal -->
+<div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+  <div class="modal-content order-detail-modal" (click)="$event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2>Detail Pesanan</h2>
+      <button class="close-btn" (click)="closeDetailModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body" *ngIf="selectedOrder">
+
+      <!-- Order Info -->
+      <div class="detail-section">
+        <h3><ion-icon name="receipt-outline"></ion-icon> Informasi Pesanan</h3>
+        <div class="detail-row">
+          <span class="label">Nomor Pesanan:</span>
+          <span class="value">{{ selectedOrder.orderNumber }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Tanggal:</span>
+          <span class="value">{{ selectedOrder.orderDate | date:'dd MMM yyyy, HH:mm' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Status:</span>
+          <span class="status-badge" [class]="selectedOrder.status">
+            {{ getStatusLabel(selectedOrder.status) }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="detail-section">
+        <h3><ion-icon name="person-outline"></ion-icon> Informasi Pelanggan</h3>
+        <div class="detail-row">
+          <span class="label">Nama:</span>
+          <span class="value">{{ selectedOrder.customerName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Telepon:</span>
+          <span class="value">{{ selectedOrder.customerPhone }}</span>
+        </div>
+      </div>
+
+      <!-- Shipping Info -->
+      <div class="detail-section">
+        <h3><ion-icon name="location-outline"></ion-icon> Alamat Pengiriman</h3>
+        <p class="address-text">{{ selectedOrder.shippingAddress || 'Tidak ada alamat' }}</p>
+      </div>
+
+      <!-- Payment Info -->
+      <div class="detail-section">
+        <h3><ion-icon name="card-outline"></ion-icon> Metode Pembayaran</h3>
+        <p class="payment-text">{{ selectedOrder.paymentMethod || 'Tidak ada informasi' }}</p>
+      </div>
+
+      <!-- Items List -->
+      <div class="detail-section">
+        <h3><ion-icon name="basket-outline"></ion-icon> Daftar Produk</h3>
+        <div class="item" *ngFor="let item of selectedOrder.items">
+          <img [src]="item.productImage" [alt]="item.productName">
+          <div class="item-info">
+            <p class="item-name">{{ item.productName }}</p>
+            <p class="item-qty">{{ item.quantity }} x Rp {{ item.price | number:'1.0-0' }}</p>
+          </div>
+          <p class="item-total">Rp {{ (item.quantity * item.price) | number:'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <!-- Customer Notes -->
+      <div class="detail-section" *ngIf="selectedOrder.customerNotes">
+        <h3><ion-icon name="chatbubble-outline"></ion-icon> Catatan Pelanggan</h3>
+        <p class="notes-text">{{ selectedOrder.customerNotes }}</p>
+      </div>
+
+      <!-- Tracking Number -->
+      <div class="detail-section" *ngIf="selectedOrder.resi">
+        <h3><ion-icon name="cube-outline"></ion-icon> Nomor Resi</h3>
+        <p class="resi-text">{{ selectedOrder.resi }}</p>
+      </div>
+
+      <!-- Total -->
+      <div class="detail-total">
+        <span>Total Pembayaran:</span>
+        <span class="total-amount">Rp {{ selectedOrder.totalAmount | number:'1.0-0' }}</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>

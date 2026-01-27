@@ -1,0 +1,193 @@
+<ion-content [fullscreen]="true" class="dashboard-content">
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Dashboard</h1>
+      <p class="header-subtitle">Selamat datang kembali!</p>
+    </div>
+    <ion-button class="notification-btn" fill="clear">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <ion-badge class="notif-badge">5</ion-badge>
+    </ion-button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+
+      <div class="stat-card primary">
+        <div class="stat-icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Penjualan Hari Ini</p>
+          <h2 class="stat-value">Rp {{ todaySales | number:'1.0-0' }}</h2>
+          <span class="stat-change positive">
+            <ion-icon name="trending-up"></ion-icon> +{{ salesChange }}%
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card warning">
+        <div class="stat-icon">
+          <ion-icon name="receipt-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Pesanan Baru</p>
+          <h2 class="stat-value">{{ newOrders }}</h2>
+          <span class="stat-change">Menunggu diproses</span>
+        </div>
+      </div>
+
+      <div class="stat-card success">
+        <div class="stat-icon">
+          <ion-icon name="trending-up-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Pendapatan Bulan Ini</p>
+          <h2 class="stat-value">Rp {{ monthlyRevenue | number:'1.0-0' }}</h2>
+          <span class="stat-change positive">
+            <ion-icon name="trending-up"></ion-icon> +{{ revenueChange }}%
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card info">
+        <div class="stat-icon">
+          <ion-icon name="cube-outline"></ion-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Produk Aktif</p>
+          <h2 class="stat-value">{{ activeProducts }}</h2>
+          <span class="stat-change">{{ totalProducts }} total</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Penjualan Mingguan</h3>
+        <select class="period-select">
+          <option>7 Hari Terakhir</option>
+          <option>30 Hari Terakhir</option>
+        </select>
+      </div>
+      <div class="chart-placeholder">
+        <div class="bars-chart">
+          <div class="bar" style="height: 60%">
+            <span class="bar-label">Sen</span>
+          </div>
+          <div class="bar" style="height: 75%">
+            <span class="bar-label">Sel</span>
+          </div>
+          <div class="bar" style="height: 50%">
+            <span class="bar-label">Rab</span>
+          </div>
+          <div class="bar" style="height: 85%">
+            <span class="bar-label">Kam</span>
+          </div>
+          <div class="bar" style="height: 90%">
+            <span class="bar-label">Jum</span>
+          </div>
+          <div class="bar active" style="height: 100%">
+            <span class="bar-label">Sab</span>
+            <span class="bar-value">1.2jt</span>
+          </div>
+          <div class="bar" style="height: 70%">
+            <span class="bar-label">Min</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Produk Terlaris</h3>
+        <a class="view-all">Lihat Semua</a>
+      </div>
+      <div class="top-products">
+        <div class="product-item" *ngFor="let product of topProducts">
+          <div class="product-rank">{{ product.rank }}</div>
+          <img [src]="product.image" [alt]="product.name">
+          <div class="product-info">
+            <p class="product-name">{{ product.name }}</p>
+            <p class="product-sales">{{ product.sold }} terjual</p>
+          </div>
+          <div class="product-revenue">Rp {{ product.revenue | number:'1.0-0' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="recent-section">
+    <div class="section-header">
+      <h3>Pesanan Terbaru</h3>
+      <a class="view-all" (click)="goToOrders()">Lihat Semua</a>
+    </div>
+    <div class="orders-list">
+      <div class="order-card" *ngFor="let order of recentOrders" (click)="viewOrder(order)">
+        <div class="order-header">
+          <div class="order-info">
+            <h4>#{{ order.orderNumber }}</h4>
+            <p class="order-date">{{ order.date | date:'dd MMM, HH:mm' }}</p>
+          </div>
+          <div class="order-status" [class]="order.status">
+            {{ getStatusLabel(order.status) }}
+          </div>
+        </div>
+        <div class="order-customer">
+          <ion-icon name="person-outline"></ion-icon>
+          {{ order.customerName }}
+        </div>
+        <div class="order-footer">
+          <p class="order-items">{{ order.itemsCount }} item</p>
+          <p class="order-total">Rp {{ order.total | number:'1.0-0' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="alerts-section">
+    <div class="section-header">
+      <h3>Notifikasi & Peringatan</h3>
+    </div>
+    <div class="alerts-list">
+
+      <div class="alert-card warning" *ngIf="lowStockProducts.length > 0">
+        <ion-icon name="warning-outline" class="alert-icon"></ion-icon>
+        <div class="alert-content">
+          <h4>Stok Menipis</h4>
+          <p>{{ lowStockProducts.length }} produk stok hampir habis</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+      </div>
+
+      <div class="alert-card info" *ngIf="newReviews > 0">
+        <ion-icon name="star-outline" class="alert-icon"></ion-icon>
+        <div class="alert-content">
+          <h4>Ulasan Baru</h4>
+          <p>{{ newReviews }} ulasan customer menunggu tanggapan</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+      </div>
+
+      <div class="alert-card success">
+        <ion-icon name="checkmark-circle-outline" class="alert-icon"></ion-icon>
+        <div class="alert-content">
+          <h4>Produk Terpopuler</h4>
+          <p>Apel Fuji sedang trending minggu ini!</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,104 @@
+<ion-header [translucent]="true" class="orders-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-title class="header-title">
+      <div class="logo-section">
+        <ion-icon name="clipboard-outline" class="logo-icon"></ion-icon>
+        <span>Pesanan Saya</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="orders-content">
+
+  <!-- Status Tabs -->
+  <div class="status-tabs">
+    <div class="tab" [class.active]="selectedStatus === 'all'" (click)="selectStatus('all')">
+      Semua
+      <span class="badge" *ngIf="getOrderCount('all') > 0">{{ getOrderCount('all') }}</span>
+    </div>
+    <div class="tab" [class.active]="selectedStatus === 'processing'" (click)="selectStatus('processing')">
+      Diproses
+      <span class="badge" *ngIf="getOrderCount('processing') > 0">{{ getOrderCount('processing') }}</span>
+    </div>
+    <div class="tab" [class.active]="selectedStatus === 'shipped'" (click)="selectStatus('shipped')">
+      Dikirim
+      <span class="badge" *ngIf="getOrderCount('shipped') > 0">{{ getOrderCount('shipped') }}</span>
+    </div>
+    <div class="tab" [class.active]="selectedStatus === 'delivered'" (click)="selectStatus('delivered')">
+      Selesai
+      <span class="badge" *ngIf="getOrderCount('delivered') > 0">{{ getOrderCount('delivered') }}</span>
+    </div>
+    <div class="tab" [class.active]="selectedStatus === 'cancelled'" (click)="selectStatus('cancelled')">
+      Dibatalkan
+      <span class="badge" *ngIf="getOrderCount('cancelled') > 0">{{ getOrderCount('cancelled') }}</span>
+    </div>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-section">
+    <div class="orders-list" *ngIf="filteredOrders.length > 0">
+      <div class="order-card" *ngFor="let order of filteredOrders" (click)="viewOrderDetail(order)">
+
+        <!-- Order Header -->
+        <div class="order-header">
+          <div class="order-info">
+            <h4>Order #{{ order.order_number }}</h4>
+            <p class="date">{{ order.created_at | date:'dd MMM yyyy, HH:mm' }}</p>
+          </div>
+          <div class="status-badge" [class]="order.status">
+            {{ getStatusLabel(order.status) }}
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items">
+          <div class="item" *ngFor="let item of order.items">
+            <img [src]="item.image || 'assets/fruits/default.png'" [alt]="item.product_name">
+            <div class="item-info">
+              <p class="name">{{ item.product_name }}</p>
+              <p class="quantity">{{ item.quantity }}x Rp {{ item.price | number:'1.0-0' }}</p>
+            </div>
+            <p class="subtotal">Rp {{ item.quantity * item.price | number:'1.0-0' }}</p>
+          </div>
+        </div>
+
+        <!-- Order Footer -->
+        <div class="order-footer">
+          <div class="total">
+            <span class="label">Total Pesanan:</span>
+            <span class="amount">Rp {{ order.final_total | number:'1.0-0' }}</span>
+          </div>
+          <div class="actions">
+            <button class="btn-secondary" *ngIf="order.status === 'delivered'" (click)="reorder(order, $event)">
+              <ion-icon name="refresh-outline"></ion-icon>
+              Pesan Lagi
+            </button>
+
+            <button class="btn-primary" *ngIf="order.status === 'delivered'" (click)="leaveReview(order, $event)">
+              <ion-icon name="star-outline"></ion-icon>
+              Beri Ulasan
+            </button>
+            <button class="btn-danger" *ngIf="order.status === 'processing'" (click)="cancelOrder(order, $event)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+              Batalkan
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredOrders.length === 0">
+      <ion-icon [name]="getEmptyIcon()" class="empty-icon"></ion-icon>
+      <h3>{{ getEmptyTitle() }}</h3>
+      <p>{{ getEmptyMessage() }}</p>
+      <button class="btn-shop" (click)="goToShop()" *ngIf="selectedStatus === 'all'">
+        <ion-icon name="cart-outline"></ion-icon>
+        Mulai Belanja
+      </button>
+    </div>
+  </div>
+
+</ion-content>

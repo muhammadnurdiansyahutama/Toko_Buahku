@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Edit Profil</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="edit-profile-content">
+    <div class="form-container">
+
+        <div class="form-group">
+            <label>Nama Lengkap *</label>
+            <ion-input [(ngModel)]="userData.nama" type="text" placeholder="Masukkan nama lengkap"
+                class="custom-input"></ion-input>
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <ion-input [(ngModel)]="userData.email" type="email" placeholder="example@email.com"
+                class="custom-input"></ion-input>
+        </div>
+
+        <div class="form-group">
+            <label>Nomor Telepon *</label>
+            <ion-input [(ngModel)]="userData.telepon" type="tel" placeholder="08123456789"
+                class="custom-input"></ion-input>
+        </div>
+
+        <div class="form-group">
+            <label>Alamat Lengkap *</label>
+            <ion-textarea [(ngModel)]="userData.alamat" placeholder="Jl. Contoh No. 123, Kota" rows="4"
+                class="custom-textarea"></ion-textarea>
+        </div>
+
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <div class="footer-buttons">
+            <ion-button expand="block" (click)="saveProfile()" [disabled]="isProcessing">
+                <ion-spinner name="crescent" *ngIf="isProcessing"></ion-spinner>
+                <span *ngIf="!isProcessing">Simpan Perubahan</span>
+            </ion-button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
