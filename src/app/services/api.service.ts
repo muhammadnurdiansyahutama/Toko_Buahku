@@ -65,7 +65,7 @@ export interface CartSummary {
     providedIn: 'root'
 })
 export class ApiService {
-    private apiUrl = 'http://localhost/tokobuah_api';
+    private apiUrl = 'https://nurdiansyah.perangkatlunak.my.id/tokobuah_api';
 
     constructor(private http: HttpClient) { }
 

@@ -18,7 +18,7 @@ export interface User {
 export class AuthService {
     private readonly STORAGE_KEY = 'tokobuah_users';
     private readonly CURRENT_USER_KEY = 'tokobuah_current_user';
-    private readonly apiUrl = 'http://localhost/tokobuah_api';
+    private readonly apiUrl = 'https://nurdiansyah.perangkatlunak.my.id/tokobuah_api';
 
     private currentUserSubject = new BehaviorSubject<User | null>(this.getCurrentUser());
     public currentUser$ = this.currentUserSubject.asObservable();
